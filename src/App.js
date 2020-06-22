@@ -7,6 +7,7 @@ class App extends React.Component {
     super();
     this.state = {
       monsters: [],
+      searchField: "",
     };
   }
   componentDidMount() {
@@ -16,13 +17,19 @@ class App extends React.Component {
   }
 
   render() {
+    const { monsters, searchField } = this.state;
+    const filteredMonsters = monsters.filter((monster) =>
+      monster.name.toLowerCase().includes(searchField.toLocaleLowerCase())
+    );
     return (
       <div className="App">
-        <CardList name="Yihua">
-          {this.state.monsters.map((monster) => {
-            return <h1 key={monster.id}>{monster.name}</h1>;
-          })}
-        </CardList>
+        <input
+          type="text"
+          placeholder="Search"
+          onChange={(e) => this.setState({ searchField: e.target.value })}
+        />
+
+        <CardList monsters={filteredMonsters} />
       </div>
     );
   }
